@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class ServiceHebergement implements IHebergement<Hebergement> {
     Connection con;
 
@@ -15,14 +16,33 @@ public class ServiceHebergement implements IHebergement<Hebergement> {
 
     @Override
     public void ajouterHebergement(Hebergement hebergement) throws SQLException {
-        String req = "INSERT INTO hebergement(nom_hebergement,ville_hebergement,type_hebergement,description_hebergement,prix_hebergement)VALUES(?,?,?,?,?,?)";
-        PreparedStatement ps = con.prepareStatement(req);
-        ps.setString(1, hebergement.getNom_hebergement());
-        ps.setString(2, hebergement.getAdresse_hebergement());
-        ps.setString(4, hebergement.getDescription_hebergement());
-        ps.setDouble(5, hebergement.getPrix_hebergement());
-        ps.executeUpdate();
-        System.out.println("Hebergement ajouté");
+        try{
+            if(hebergement.getNom_hebergement() == null || hebergement.getNom_hebergement().trim().isEmpty()){
+                System.out.println("Le nom ne peut pas être vide.");
+            }
+
+            int ID = hebergement.getId_type_hebergement();
+            if (ID < 1 || ID > 3) {
+                System.out.println("ID doit être entre 1 e 3.");
+            }
+            String req = "INSERT INTO hebergement(id_type_hebergement, nom_hebergement, adresse_hebergement, description_hebergement,Capacite_hebergement,prix_hebergement,date_dispo)VALUES(?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = con.prepareStatement(req);
+
+            ps.setInt(1, hebergement.getId_type_hebergement());
+            ps.setString(2, hebergement.getNom_hebergement());
+            ps.setString(3, hebergement.getAdresse_hebergement());
+            ps.setString(4, hebergement.getDescription_hebergement());
+            ps.setInt(5, hebergement.getCapacite_hebergement());
+            ps.setDouble(6, hebergement.getPrix_hebergement());
+            ps.setDate(7, hebergement.getDate_dispo());
+            ps.executeUpdate();
+           System.out.println("Hebergement ajouté avec succès !");
+
+        }
+        catch(SQLException e){
+            System.out.println(e);
+        }
 
     }
 

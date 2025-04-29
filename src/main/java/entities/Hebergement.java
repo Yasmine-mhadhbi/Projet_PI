@@ -1,22 +1,22 @@
 package entities;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 public class Hebergement {
-    private int id_hebergement,Capacite_hebergement;
-    private int id_type_hebergement;
+    private int id_hebergement,id_type_hebergement,Capacite_hebergement;
     private String nom_hebergement, adresse_hebergement, description_hebergement;
     private double prix_hebergement;
-    private Date date_dispo;
+    private java.sql.Date date_dispo;
 
 
     public Hebergement() {}
 
-    public Hebergement(int id_hebergement, int capacite_hebergement, int id_type_hebergement, String nom_hebergement, String adresse_hebergement, String description_hebergement, double prix_hebergement, Date date_dispo) {
+    public Hebergement(int id_hebergement,  int id_type_hebergement, int capacite_hebergement, String nom_hebergement, String adresse_hebergement, String description_hebergement, double prix_hebergement, Date date_dispo) {
 
         this.id_hebergement = id_hebergement;
-        this.Capacite_hebergement = capacite_hebergement;
         this.id_type_hebergement = id_type_hebergement;
+        this.Capacite_hebergement = capacite_hebergement;
         this.nom_hebergement = nom_hebergement;
         this.adresse_hebergement = adresse_hebergement;
         this.description_hebergement = description_hebergement;
@@ -24,15 +24,6 @@ public class Hebergement {
         this.date_dispo = date_dispo;
     }
 
-    public Hebergement(int id_hebergement, int Capacite_hebergement, String nom_hebergement, String ville_hebergement, String description_hebergement, double prix_hebergement, Date date_dispo, TypeHebergement type_hebergement) {
-        this.id_hebergement=id_hebergement;
-        this.Capacite_hebergement=Capacite_hebergement;
-        this.nom_hebergement=nom_hebergement;
-        this.adresse_hebergement=adresse_hebergement;
-        this.description_hebergement=description_hebergement;
-        this.prix_hebergement=prix_hebergement;
-        this.date_dispo=date_dispo;
-    }
     public int getId_hebergement() {
         return id_hebergement;
     }
@@ -83,13 +74,7 @@ public class Hebergement {
         this.id_type_hebergement = id_type_hebergement;
     }
 
-    public int getType_hebergement() {
-        return id_type_hebergement;
-    }
 
-    public void setType_hebergement(int id_type_hebergement) {
-        this.id_type_hebergement = id_type_hebergement;
-    }
 
     @Override
     public String toString() {
