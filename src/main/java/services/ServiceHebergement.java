@@ -16,15 +16,23 @@ public class ServiceHebergement implements IHebergement<Hebergement> {
 
     @Override
     public void ajouterHebergement(Hebergement hebergement) throws SQLException {
-        try{
-            if(hebergement.getNom_hebergement() == null || hebergement.getNom_hebergement().trim().isEmpty()){
-                System.out.println("Le nom ne peut pas être vide.");
-            }
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Entrez le nom d'hébergement : ");
+        String NOM = scanner.nextLine();
+        System.out.print("Entrez l'adresse' d'hébergement : ");
+        String ADRESSE = scanner.nextLine();
 
-            int ID = hebergement.getId_type_hebergement();
-            if (ID < 1 || ID > 3) {
-                System.out.println("ID doit être entre 1 e 3.");
-            }
+        String check = "SELECT COUNT(*) FROM hebergement WHERE LOWER(nom_hebergement) = LOWER(?) AND LOWER(adresse_hebergement) = LOWER(?)";
+        PreparedStatement checkps = con.prepareStatement(check);
+        checkps.setString(1, NOM);
+        checkps.setString(2, ADRESSE);
+        ResultSet idResult = checkps.executeQuery();
+        idResult.next();
+        if (idResult.getInt(1) > 0) {
+            System.out.println("cet hébergement existe déjà dans la base de données.");
+            return;
+        }
+        else {
             String req = "INSERT INTO hebergement(id_type_hebergement, nom_hebergement, adresse_hebergement, description_hebergement,Capacite_hebergement,prix_hebergement,date_dispo)VALUES(?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(req);
@@ -37,35 +45,90 @@ public class ServiceHebergement implements IHebergement<Hebergement> {
             ps.setDouble(6, hebergement.getPrix_hebergement());
             ps.setDate(7, hebergement.getDate_dispo());
             ps.executeUpdate();
-           System.out.println("Hebergement ajouté avec succès !");
+            System.out.println("Hébergement ajouté avec succès !");
+        }
 
-        }
-        catch(SQLException e){
-            System.out.println(e);
-        }
+
 
     }
 
     @Override
     public void supprimerHebergement(Hebergement hebergement) throws SQLException {
         Scanner scanner = new Scanner(System.in);
-
-        String req = "DELETE FROM hebergement WHERE id_hebergement = ?";
-        PreparedStatement ps = con.prepareStatement(req);
-        ps.setInt(1, hebergement.getId_hebergement());
-        ps.executeUpdate();
+        System.out.print("Entrez l'ID d'hébergement : ");
+        int ID = scanner.nextInt();
+        scanner.nextLine();
+        String check = "SELECT COUNT(*) FROM hebergement WHERE id_hebergement = ? ";
+        PreparedStatement checkps = con.prepareStatement(check);
+        checkps.setInt(1, ID);
+        ResultSet idResult = checkps.executeQuery();
+        idResult.next();
+        if (idResult.getInt(1) == 1) {
+            String req = "DELETE FROM hebergement WHERE id_hebergement = ?";
+            PreparedStatement ps = con.prepareStatement(req);
+            ps.setInt(1, ID);
+            ps.executeUpdate();
+            System.out.println("hébergement supprimé");
+        }
+        else {
+            System.out.println("hébergement n'existe pas dans la base de données");
+        }
     }
 
     @Override
     public void modifierHebergements(Hebergement hebergement) throws SQLException {
-    String req = "UPDATE hebergement Set nom_hebergement=? , ville_hebergement=?, type_hebergement=? ,description_hebergement=? ,prix_hebergement=? WHERE id_hebergement = ?";
-        PreparedStatement ps = con.prepareStatement(req);
-        ps.setString(1,hebergement.getNom_hebergement() );
-        ps.setString(2,hebergement.getAdresse_hebergement());
-        ps.setString(4,hebergement.getDescription_hebergement());
-        ps.setDouble(5,hebergement.getPrix_hebergement());
-        ps.setInt(6,hebergement.getId_hebergement());
-        ps.executeUpdate();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Entrez l'ID d'hébergement : ");
+        int ID = scanner.nextInt();
+        scanner.nextLine();
+        String check = "SELECT COUNT(*) FROM hebergement WHERE id_hebergement = ? ";
+        PreparedStatement checkps = con.prepareStatement(check);
+        checkps.setInt(1, ID);
+        ResultSet idResult = checkps.executeQuery();
+        idResult.next();
+        if (idResult.getInt(1) == 1) {
+            // Saisie des nouvelles valeurs
+            System.out.print("Nouveau ID du type d'hébergement : ");
+            int idType = scanner.nextInt();
+            scanner.nextLine(); // vider la ligne
+
+            System.out.print("Nouveau nom d'hébergement : ");
+            String nom = scanner.nextLine();
+
+            System.out.print("Nouvelle adresse : ");
+            String adresse = scanner.nextLine();
+
+            System.out.print("Nouvelle description : ");
+            String description = scanner.nextLine();
+
+            System.out.print("Nouvelle capacité : ");
+            int capacite = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Nouveau prix : ");
+            double prix = scanner.nextDouble();
+            scanner.nextLine();
+
+            System.out.print("Nouvelle date de disponibilité (format : YYYY-MM-DD) : ");
+            String dateStr = scanner.nextLine();
+            Date date = Date.valueOf(dateStr); // conversion
+
+            String req = "UPDATE hebergement Set id_type_hebergement = ?, nom_hebergement = ?, adresse_hebergement = ?, description_hebergement = ?,Capacite_hebergement = ?,prix_hebergement = ?,date_dispo = ? WHERE id_hebergement = ?";
+            PreparedStatement ps = con.prepareStatement(req);
+            ps.setInt(1, hebergement.getId_type_hebergement());
+            ps.setString(2, hebergement.getNom_hebergement());
+            ps.setString(3, hebergement.getAdresse_hebergement());
+            ps.setString(4, hebergement.getDescription_hebergement());
+            ps.setInt(5, hebergement.getCapacite_hebergement());
+            ps.setDouble(6, hebergement.getPrix_hebergement());
+            ps.setDate(7, hebergement.getDate_dispo());
+            ps.setInt(8, ID);
+            ps.executeUpdate();
+            System.out.println("hébergement modifié avec succés");
+        }
+        else {
+        System.out.println("hébergement n'existe pas dans la base de données");
+        }
     }
 
     @Override
