@@ -24,55 +24,29 @@ public class Hebergement {
         this.date_dispo = date_dispo;
     }
 
-    public int getId_hebergement() {
-        return id_hebergement;
-    }
-    public void setId_hebergement(int id_hebergement) {
-        this.id_hebergement=id_hebergement;
-    }
+
     public int getCapacite_hebergement() {
         return Capacite_hebergement;
-    }
-    public void setCapacite_hebergement(int capaciteHebergement) {
-        Capacite_hebergement=capaciteHebergement;
     }
     public String getNom_hebergement() {
         return nom_hebergement;
     }
-    public void setNom_hebergement(String nom_hebergement) {
-        this.nom_hebergement=nom_hebergement;
-    }
     public String getAdresse_hebergement() {
         return adresse_hebergement;
-    }
-    public void setAdresse_hebergement(String ville_hebergement){
-        this.adresse_hebergement=ville_hebergement;
     }
     public String getDescription_hebergement() {
         return description_hebergement;
     }
-    public void setDescription_hebergement(String description_hebergement) {
-        this.description_hebergement = description_hebergement;
-    }
     public double getPrix_hebergement() {
         return prix_hebergement;
     }
-    public void setPrix_hebergement(double prix_hebergement) {
-        this.prix_hebergement = prix_hebergement;
-    }
     public Date getDate_dispo() {
         return date_dispo;
-    }
-    public void setDate_dispo(Date date_dispo) {
-        this.date_dispo = date_dispo;
     }
     public int getId_type_hebergement() {
         return id_type_hebergement;
     }
 
-    public void setId_type_hebergement(int id_type_hebergement) {
-        this.id_type_hebergement = id_type_hebergement;
-    }
 
 
 
