@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SeviceHebergement implements IHebergement<Hebergement> {
+public class ServiceHebergement implements IHebergement<Hebergement> {
     Connection con;
 
-    public SeviceHebergement() {
+    public ServiceHebergement() {
         con = MyDataBase.getInstance().getConnection();
     }
 
